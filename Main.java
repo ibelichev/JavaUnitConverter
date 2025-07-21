@@ -2,6 +2,7 @@ import convertors.BaseConverter;
 import convertors.LengthConvertor;
 import convertors.MassConvertor;
 import convertors.TemperatureConvertor;
+import exceptions.ConvertionException;
 import exceptions.IlligalUnitException;
 import exceptions.InputException;
 import units.LengthEnum;
@@ -47,19 +48,17 @@ public class Main {
                 }
 
                 System.out.println("\n\n");
-            } catch (InputException e) {
+            } catch (InputException | IlligalUnitException e) {
                 System.out.println(e.getMessage());
             } catch (IllegalArgumentException e) {
                 System.out.println("Введите корректную категорию");
-            } catch (IlligalUnitException e) {
-                throw new RuntimeException(e);
             }
         }
     }
 
     private static <T extends Enum<T>> void processConversion(Object convertor,
                                                               String[] input,
-                                                              Class<T> enumClass) throws InputException {
+                                                              Class<T> enumClass) {
         try {
             double value = Double.parseDouble(input[1]);
             T fromUnit = Enum.valueOf(enumClass, input[2].toUpperCase());
@@ -67,10 +66,12 @@ public class Main {
             double result = ((BaseConverter<T>) convertor).convert(value, fromUnit, toUnit);
             System.out.println(value + " " + fromUnit + " = " + result + " " + toUnit);
 
+        } catch (ConvertionException e) {
+            System.out.println(e.getMessage());
         } catch (NumberFormatException e) {
             System.out.println("Некорректное значение конвертируемого числа");
         } catch (IllegalArgumentException e) {
-            throw new InputException("Некорректные единицы измерения");
+            System.out.println("Некорректные единицы измерения");
         }
     }
 }

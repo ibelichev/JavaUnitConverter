@@ -11,9 +11,9 @@ public class LengthConvertor extends BaseConverter<LengthEnum> {
 
     @Override
     public double convert(double originValue, LengthEnum from, LengthEnum to) throws ConvertionException {
-        if (from.equals(to)) return originValue;
         if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
 
+        if (from.equals(to)) return originValue;
 
         double convertedToSI = toSI(originValue, from);
 

@@ -11,8 +11,9 @@ import units.MassEnum;
 public class MassConvertor extends BaseConverter<MassEnum> {
     @Override
     public double convert(double originValue, MassEnum from, MassEnum to) throws ConvertionException {
-        if (from.equals(to)) return originValue;
         if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
+
+        if (from.equals(to)) return originValue;
 
         double convertedToSI = toSI(originValue, from);
 
