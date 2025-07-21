@@ -1,5 +1,6 @@
 package convertors;
 
+import exceptions.ConvertionException;
 import units.LengthEnum;
 
 /**
@@ -9,8 +10,10 @@ import units.LengthEnum;
 public class LengthConvertor extends BaseConverter<LengthEnum> {
 
     @Override
-    public double convert(double originValue, LengthEnum from, LengthEnum to) {
+    public double convert(double originValue, LengthEnum from, LengthEnum to) throws ConvertionException {
         if (from.equals(to)) return originValue;
+        if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
+
 
         double convertedToSI = toSI(originValue, from);
 

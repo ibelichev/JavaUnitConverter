@@ -1,4 +1,7 @@
 package convertors;
+
+import exceptions.ConvertionException;
+
 public abstract class BaseConverter <T>{
 
     /**
@@ -8,7 +11,7 @@ public abstract class BaseConverter <T>{
      * @param to единицы измерения в которые переводим
      * @return возвращает сконвертированное значение
      */
-    public abstract double convert(double originValue, T from, T to);
+    public abstract double convert(double originValue, T from, T to) throws ConvertionException;
 
     /**
      * Переводим в СИ

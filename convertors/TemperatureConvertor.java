@@ -1,11 +1,13 @@
 package convertors;
 
+import exceptions.ConvertionException;
 import units.TemperatureEnum;
 
 public class TemperatureConvertor extends BaseConverter<TemperatureEnum> {
     @Override
-    public double convert(double originValue, TemperatureEnum from, TemperatureEnum to) {
+    public double convert(double originValue, TemperatureEnum from, TemperatureEnum to) throws ConvertionException {
         if (from.equals(to)) return originValue;
+        if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
 
         double convertedToSI = toSI(originValue, from);
 
