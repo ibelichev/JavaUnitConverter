@@ -3,7 +3,6 @@ import convertors.LengthConvertor;
 import convertors.MassConvertor;
 import convertors.TemperatureConvertor;
 import exceptions.ConvertionException;
-import exceptions.IlligalUnitException;
 import exceptions.InputException;
 import units.LengthEnum;
 import units.MassEnum;
@@ -44,11 +43,10 @@ public class Main {
                     case LENGTH -> processConversion(lengthConvertor, input, LengthEnum.class);
                     case WEIGHT -> processConversion(massConvertor, input, MassEnum.class);
                     case TEMPERATURE -> processConversion(temperatureConvertor, input, TemperatureEnum.class);
-                    default -> throw new IlligalUnitException("Неизвестная категория: " + category.name());
                 }
 
                 System.out.println("\n\n");
-            } catch (InputException | IlligalUnitException e) {
+            } catch (InputException e) {
                 System.out.println(e.getMessage());
             } catch (IllegalArgumentException e) {
                 System.out.println("Введите корректную категорию");
@@ -56,16 +54,15 @@ public class Main {
         }
     }
 
-    private static <T extends Enum<T>> void processConversion(Object convertor,
+    private static <T extends Enum<T>> void processConversion(BaseConverter<T> convertor,
                                                               String[] input,
                                                               Class<T> enumClass) {
         try {
             double value = Double.parseDouble(input[1]);
             T fromUnit = Enum.valueOf(enumClass, input[2].toUpperCase());
             T toUnit = Enum.valueOf(enumClass, input[3].toUpperCase());
-            double result = ((BaseConverter<T>) convertor).convert(value, fromUnit, toUnit);
-            System.out.println(value + " " + fromUnit + " = " + result + " " + toUnit);
-
+            double result = convertor.convert(value, fromUnit, toUnit);
+            System.out.printf("%2f %s = %2f %s%n", value, fromUnit, result, toUnit);
         } catch (ConvertionException e) {
             System.out.println(e.getMessage());
         } catch (NumberFormatException e) {

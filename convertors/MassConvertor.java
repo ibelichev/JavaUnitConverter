@@ -9,6 +9,10 @@ import units.MassEnum;
  * поведение описано в базовом классе
  */
 public class MassConvertor extends BaseConverter<MassEnum> {
+
+    private static final double ounceCf = 0.02834952;
+    private static final double poundCf = 0.45359237;
+
     @Override
     public double convert(double originValue, MassEnum from, MassEnum to) throws ConvertionException {
         if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
@@ -20,8 +24,8 @@ public class MassConvertor extends BaseConverter<MassEnum> {
         // переводим из килограммов
         return switch (to) {
             case KILOGRAM -> convertedToSI;
-            case POUND -> convertedToSI / 0.45359237;
-            case OUNCE -> convertedToSI / 0.02834952;
+            case POUND -> convertedToSI / poundCf;
+            case OUNCE -> convertedToSI / ounceCf;
         };
     }
 
@@ -30,8 +34,8 @@ public class MassConvertor extends BaseConverter<MassEnum> {
     protected double toSI(double originValue, MassEnum from) {
         return switch (from) {
             case KILOGRAM -> originValue;
-            case POUND -> originValue * 0.45359237;
-            case OUNCE -> originValue * 0.02834952;
+            case POUND -> originValue * poundCf;
+            case OUNCE -> originValue * ounceCf;
         };
     }
 }

@@ -9,6 +9,9 @@ import units.LengthEnum;
  */
 public class LengthConvertor extends BaseConverter<LengthEnum> {
 
+    private static final int kilometerCf = 1000;
+    private static final int mileCf = 1609;
+
     @Override
     public double convert(double originValue, LengthEnum from, LengthEnum to) throws ConvertionException {
         if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
@@ -19,8 +22,8 @@ public class LengthConvertor extends BaseConverter<LengthEnum> {
 
         return switch (to) {
             case METER -> convertedToSI;
-            case MILE -> convertedToSI * 1609;
-            case KILOMETER -> convertedToSI / 1000;
+            case MILE -> convertedToSI * mileCf;
+            case KILOMETER -> convertedToSI / kilometerCf;
         };
     }
 
@@ -29,8 +32,8 @@ public class LengthConvertor extends BaseConverter<LengthEnum> {
     protected double toSI(double originValue, LengthEnum from) {
         return switch (from) {
             case METER -> originValue;
-            case KILOMETER -> originValue * 1000;
-            case MILE -> originValue * 1609;
+            case KILOMETER -> originValue * kilometerCf;
+            case MILE -> originValue * mileCf;
         };
     }
 }

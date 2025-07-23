@@ -4,6 +4,11 @@ import exceptions.ConvertionException;
 import units.TemperatureEnum;
 
 public class TemperatureConvertor extends BaseConverter<TemperatureEnum> {
+
+    public static final double KelvinOffset = 273.15;
+    public static final double FahrenheitCf = 9.0 / 5.0;
+    public static final int FahrenheitOffset = 32;
+
     @Override
     public double convert(double originValue, TemperatureEnum from, TemperatureEnum to) throws ConvertionException {
         if (originValue < 0) throw new ConvertionException("число не может быть меньше нуля");
@@ -15,8 +20,8 @@ public class TemperatureConvertor extends BaseConverter<TemperatureEnum> {
         // перевод из Кельвинов
         return switch (to) {
             case KELVIN -> convertedToSI;
-            case CELSIUS -> convertedToSI - 273.15;
-            case FAHRENHEIT -> (convertedToSI - 273.15) * 9/5 + 32;
+            case CELSIUS -> convertedToSI - KelvinOffset;
+            case FAHRENHEIT -> (convertedToSI - KelvinOffset) * FahrenheitCf + FahrenheitOffset;
         };
     }
 
@@ -25,8 +30,8 @@ public class TemperatureConvertor extends BaseConverter<TemperatureEnum> {
     protected double toSI(double originValue, TemperatureEnum from) {
         return switch (from) {
             case KELVIN -> originValue;
-            case CELSIUS -> originValue + 273.15;
-            case FAHRENHEIT -> (originValue - 32) * 5/9 + 273.15;
+            case CELSIUS -> originValue + KelvinOffset;
+            case FAHRENHEIT -> (originValue - FahrenheitOffset) * FahrenheitCf + KelvinOffset;
         };
     }
 }
